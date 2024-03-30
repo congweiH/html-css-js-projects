@@ -40,6 +40,6 @@ body {
 }
 
 .active {
-    flex-grow: 1;
+    flex-grow: 10;
     transition: all 1s ease;
 }
