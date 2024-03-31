@@ -8,42 +8,38 @@ let curNumber = 0;
 
 // 点击上一个按钮
 prevEl.addEventListener('click', () => {
-    // 第一个
-    if (curNumber <= 0) {
-        return;
-    }
-    circleEls[curNumber].classList.remove('active');
-    curNumber = curNumber - 1;
-    console.log('curNumber', curNumber);
-
-    prevEl.classList.remove('disabled');
-    nextEl.classList.remove('disabled');
-
-    if (curNumber === 0) {
-        prevEl.classList.add('disabled');
-    } else if (curNumber === TOTAL - 1) {
-        nextEl.classList.add('disabled');
-    }
-    lineEl.style.width = (curNumber) / (TOTAL - 1) * 100 + '%';
+    curNumber = Math.max(curNumber - 1, 0);
+    
+    render();
 });
 
 // 下一个按钮
 nextEl.addEventListener('click', () => {
-    // 最后一个
-    if (curNumber >= TOTAL - 1) {
-        return;
+    curNumber = Math.min(curNumber + 1, TOTAL - 1);
+    
+    render();
+});
+
+const render = () => {
+    // 渲染circle
+    for(let i = 0; i < TOTAL; i++) {
+        if (i <= curNumber) {
+            circleEls[i].classList.add('active');
+        } else {
+            circleEls[i].classList.remove('active');
+        }
     }
-    curNumber = curNumber + 1;
-    console.log('curNumber', curNumber);
-    circleEls[curNumber].classList.add('active');
 
-    prevEl.classList.remove('disabled');
-    nextEl.classList.remove('disabled');
+    // 渲染进度条
+    lineEl.style.width = curNumber / (TOTAL - 1) * 100 + '%';
 
+    // 渲染按钮
     if (curNumber === 0) {
         prevEl.classList.add('disabled');
     } else if (curNumber === TOTAL - 1) {
         nextEl.classList.add('disabled');
+    } else {
+        prevEl.classList.remove('disabled');
+        nextEl.classList.remove('disabled');
     }
-    lineEl.style.width = (curNumber) / (TOTAL - 1) * 100 + '%';
-});
+};
